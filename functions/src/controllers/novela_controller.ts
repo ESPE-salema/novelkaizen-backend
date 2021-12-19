@@ -8,7 +8,7 @@ export async function list(req: Request, res: Response) {
     } catch (err) {
         return handleError(res, err);
     }
-}
+};
 
 function handleError(res: Response, err: any) {
     return res.status(500).send({ message: `${err.code} - ${err.message}` });

@@ -18,7 +18,7 @@ server.use(cors({ origin: true }));
 routes(server);
 
 //========== EXPORTACIÓN DEL SERVIDOR ==========//
-export {db};
+export { db };
 export const api = functions.https.onRequest(server);
 
 
