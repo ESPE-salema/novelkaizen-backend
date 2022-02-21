@@ -2,20 +2,16 @@ import * as admin from 'firebase-admin';
 import { Request, Response } from "express";
 import { Respuesta } from '../models/respuesta';
 
-export async function registro(req: Request, res: Response) {           
-    try{     
-        const { email, password} = req.body;
-        const userId = await admin.auth().getUserByEmail(email);
-        if(userId != null){
-            return res.status(400).json(Respuesta('El usuario ya esta registrado', `Usuario ${email}`, userId , 400));    
-        }
-
+export async function registro(req: Request, res: Response) {
+    try{
+        const { email, password, displayName, userName } = req.body;
         const user = await admin.auth().createUser({
             email,
-            password
+            password,
+            displayName
         });
-        await admin.auth().setCustomUserClaims(user.uid, null);
-        return res.status(201).json(Respuesta('Usuario creado', `Usuario ${user.displayName} creado`, user,201));
+        await admin.auth().setCustomUserClaims(user.uid, { userName });
+        return res.status(201).json(Respuesta('Usuario creado', `Usuario ${user.displayName} creado y nombreUsuario ${userName}`, user,201));
     }
     catch(err){
         return handleError(res, err);
